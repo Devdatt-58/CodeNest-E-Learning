@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-import GetAvgRating from "../../../utils/avgRating"
-import RatingStars from "../../common/RatingStars"
+import GetAvgRating from "../../../utils/avgRating";
+import RatingStars from "../../common/RatingStars";
 
-/**
- * Course card used across the catalog and sliders.
- * `Height` is still accepted so existing callers keep working.
- */
-const Course_Card = ({ course, Height }) => {
-  const [avgReviewCount, setAvgReviewCount] = useState(0)
+const CourseCard = ({ course, Height }) => {
+  const [avgReviewCount, setAvgReviewCount] = useState(0);
 
   useEffect(() => {
-    const count = GetAvgRating(course.ratingAndReviews)
-    setAvgReviewCount(count)
-  }, [course])
+    const count = GetAvgRating(course.ratingAndReviews);
+    setAvgReviewCount(count);
+  }, [course]);
 
   return (
     <Link to={`/courses/${course._id}`} className="group block h-full">
@@ -32,15 +28,19 @@ const Course_Card = ({ course, Height }) => {
           <h3 className="text-[1.02rem] font-semibold leading-snug text-richblack-5">
             {course?.courseName}
           </h3>
+
           <p className="text-sm text-richblack-300">
-            {course?.instructor?.firstName} {course?.instructor?.lastName}
+            {course?.instructor?.firstName}{" "}
+            {course?.instructor?.lastName}
           </p>
 
           <div className="flex items-center gap-2 text-xs">
             <span className="font-semibold text-brown-50">
               {avgReviewCount || 0}
             </span>
+
             <RatingStars Review_Count={avgReviewCount} />
+
             <span className="text-richblack-400">
               ({course?.ratingAndReviews?.length})
             </span>
@@ -52,7 +52,7 @@ const Course_Card = ({ course, Height }) => {
         </div>
       </article>
     </Link>
-  )
-}
+  );
+};
 
-export default Course_Card
+export default CourseCard;

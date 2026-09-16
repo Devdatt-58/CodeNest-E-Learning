@@ -1,14 +1,15 @@
-import React from 'react'
+import React from "react";
 
-import {Swiper, SwiperSlide} from "swiper/react"
-import "swiper/css"
-import "swiper/css/free-mode"
-import "swiper/css/pagination"
-import { Autoplay,FreeMode,Navigation, Pagination}  from 'swiper'
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/pagination";
 
-import Course_Card from './Course_Card'
+import { FreeMode, Pagination } from "swiper/modules";
 
-const CourseSlider = ({Courses}) => {
+import CourseCard from "../../common/CourseCard";
+
+const CourseSlider = ({ Courses }) => {
   return (
     <>
       {Courses?.length ? (
@@ -24,17 +25,22 @@ const CourseSlider = ({Courses}) => {
           }}
           className="max-h-[30rem]"
         >
-          {Courses?.map((course, i) => (
+          {Courses.map((course, i) => (
             <SwiperSlide key={i}>
-              <Course_Card course={course} Height={"h-[250px]"} />
+              <CourseCard
+                course={course}
+                Height={"h-[250px]"}
+              />
             </SwiperSlide>
           ))}
         </Swiper>
       ) : (
-        <p className="text-xl text-richblack-5">No Course Found</p>
+        <p className="text-xl text-richblack-5">
+          No Course Found
+        </p>
       )}
     </>
-  )
-}
+  );
+};
 
-export default CourseSlider
+export default CourseSlider;
