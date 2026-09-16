@@ -21,12 +21,24 @@ database.connect();
 //middlewares
 app.use(express.json());
 app.use(cookieParser());
+
 app.use(
-	cors({
-		origin:"http://localhost:3000",
-		credentials:true,
-	})
-)
+    cors({
+        origin: function (origin, callback) {
+            const allowedOrigins = [
+                "http://localhost:3000",
+                process.env.FRONTEND_URL
+            ];
+
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error("Not allowed by CORS"));
+            }
+        },
+        credentials: true,
+    })
+);
 
 app.use(
 	fileUpload({
@@ -51,7 +63,8 @@ app.get("/", (req, res) => {
 	});
 });
 
-app.listen(PORT, () => {
-	console.log(`App is running at ${PORT}`)
-})
+//const PORT = process.env.PORT || 4000;
 
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`App is running at ${PORT}`);
+});
