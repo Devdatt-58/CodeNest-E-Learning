@@ -1,0 +1,393 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   CodeNest — design tokens.
+   Single source of truth for colour, radius, elevation and motion.
+   ========================================================================== */
+:root {
+  --cn-bg: #0b1120;
+  --cn-surface: #111827;
+  --cn-card: #151e2e;
+  --cn-card-hover: #18243a;
+  --cn-text: #f8fafc;
+  --cn-text-muted: #94a3b8;
+  --cn-line: rgba(148, 163, 184, 0.15);
+  --cn-line-strong: rgba(148, 163, 184, 0.28);
+  --cn-accent: #6366f1;
+  --cn-accent-soft: rgba(99, 102, 241, 0.14);
+  --cn-accent-2: #22d3ee;
+  --cn-danger: #f43f5e;
+  --cn-success: #10b981;
+
+  --cn-radius-sm: 0.5rem;
+  --cn-radius: 0.75rem;
+  --cn-radius-lg: 1.125rem;
+
+  --cn-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  body {
+    background-color: var(--cn-bg);
+    color: var(--cn-text);
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Tighter tracking on display sizes reads as software UI rather than
+     as a marketing brochure. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.021em;
+  }
+
+  /* One visible, consistent keyboard focus treatment everywhere. */
+  :focus-visible {
+    outline: 2px solid var(--cn-accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: rgba(99, 102, 241, 0.35);
+    color: #fff;
+  }
+}
+
+/* ===== Scrollbar ===== */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #334155 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #263349;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #38455d;
+}
+
+/* Hide default styling of details/summary */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+@layer components {
+  /* ---------------------------------------------------------------- Buttons
+     One shape for every button in the product: same height, radius, weight
+     and transition. `yellowButton` / `blackButton` are legacy names kept
+     alive so existing components keep working. */
+  .cn-btn,
+  .cn-btn-primary,
+  .cn-btn-secondary,
+  .cn-btn-ghost,
+  .cn-btn-danger,
+  .yellowButton,
+  .blackButton {
+    @apply inline-flex h-10 cursor-pointer select-none items-center justify-center
+           gap-2 rounded-[0.6rem] px-4 text-sm font-semibold leading-none
+           transition-all duration-200 ease-nest
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .cn-btn-primary,
+  .yellowButton {
+    @apply text-white;
+    background-image: linear-gradient(180deg, #6f72f3 0%, #5457ec 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16),
+      0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+  .cn-btn-primary:hover:not(:disabled),
+  .yellowButton:hover:not(:disabled) {
+    background-image: linear-gradient(180deg, #7c7ff5 0%, #5f62ef 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      0 8px 22px -10px rgba(99, 102, 241, 0.85);
+  }
+  .cn-btn-primary:active:not(:disabled),
+  .yellowButton:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  .cn-btn-secondary,
+  .blackButton {
+    @apply border border-line bg-richblack-800 text-richblack-25;
+  }
+  .cn-btn-secondary:hover:not(:disabled),
+  .blackButton:hover:not(:disabled) {
+    @apply border-line-strong text-richblack-5;
+    background-color: var(--cn-card-hover);
+  }
+
+  .cn-btn-ghost {
+    @apply bg-transparent text-richblack-100;
+  }
+  .cn-btn-ghost:hover:not(:disabled) {
+    @apply bg-richblack-800 text-richblack-5;
+  }
+
+  .cn-btn-danger {
+    @apply border border-pink-200/40 bg-pink-200/10 text-pink-50;
+  }
+  .cn-btn-danger:hover:not(:disabled) {
+    @apply border-pink-200 bg-pink-200/20 text-pink-25;
+  }
+
+  .cn-btn-lg {
+    @apply h-11 px-5 text-[0.95rem];
+  }
+  .cn-btn-sm {
+    @apply h-9 px-3 text-[0.8rem];
+  }
+
+  /* --------------------------------------------------------------- Surfaces */
+  .cn-card,
+  .cn-card-hover {
+    @apply rounded-xl border border-line bg-richblack-800;
+  }
+
+  .cn-card-hover {
+    @apply transition-all duration-200 ease-nest;
+  }
+  .cn-card-hover:hover {
+    @apply border-line-strong;
+    transform: translateY(-4px);
+    box-shadow: 0 16px 34px -18px rgba(0, 0, 0, 0.85),
+      0 0 0 1px rgba(99, 102, 241, 0.18);
+  }
+
+  .cn-panel {
+    @apply rounded-xl border border-line bg-richblack-850;
+  }
+
+  /* Hairline grid — the background texture used across marketing sections. */
+  .cn-grid-bg,
+  .homepage_bg {
+    @apply bg-nest-grid bg-grid;
+  }
+
+  /* Monospace chips for metadata and keyboard hints. */
+  .cn-kbd {
+    @apply inline-flex items-center rounded-md border border-line bg-richblack-850
+           px-1.5 py-0.5 font-mono text-[11px] text-richblack-100;
+  }
+
+  .cn-chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line
+           bg-richblack-850 px-3 py-1 text-xs font-medium text-richblack-100;
+  }
+
+  /* --------------------------------------------------------- Terminal chrome */
+  .cn-terminal {
+    @apply overflow-hidden rounded-xl border border-line bg-richblack-850;
+    box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.9);
+  }
+  .cn-terminal-bar {
+    @apply flex items-center gap-2 border-b border-line bg-richblack-800 px-4 py-2.5;
+  }
+  .cn-terminal-dot {
+    @apply h-[10px] w-[10px] rounded-full;
+  }
+
+  /* ------------------------------------------------------------------ Forms */
+  .lable-style,
+  .cn-label {
+    @apply mb-1.5 block text-[0.8125rem] font-medium text-richblack-25;
+  }
+
+  .form-style,
+  .cn-input {
+    @apply w-full rounded-[0.6rem] border border-line bg-richblack-850 px-3.5 py-2.5
+           text-[0.925rem] leading-6 text-richblack-5
+           transition-all duration-150 ease-nest
+           placeholder:text-richblack-400;
+  }
+  .form-style:hover,
+  .cn-input:hover {
+    @apply border-line-strong;
+  }
+  .form-style:focus,
+  .cn-input:focus {
+    @apply border-yellow-50 outline-none;
+    box-shadow: 0 0 0 3px var(--cn-accent-soft);
+  }
+  .form-style:disabled,
+  .cn-input:disabled {
+    @apply cursor-not-allowed opacity-60;
+  }
+
+  .cn-input-error {
+    @apply border-pink-200;
+  }
+  .cn-input-error:focus {
+    @apply border-pink-200;
+    box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.18);
+  }
+  .cn-error-text {
+    @apply mt-1 flex items-center gap-1 text-xs font-medium text-pink-100;
+  }
+  .cn-help-text {
+    @apply mt-1 text-xs text-richblack-300;
+  }
+
+  /* --------------------------------------------------------------- Headings */
+  .section_heading {
+    @apply text-2xl font-bold tracking-tight text-richblack-5 lg:text-[2rem] lg:leading-[1.2];
+  }
+  .cn-display {
+    @apply text-[2.1rem] font-extrabold leading-[1.1] tracking-[-0.03em] text-richblack-5
+           sm:text-[2.6rem] lg:text-[3.2rem];
+  }
+  .cn-body {
+    @apply text-[0.975rem] leading-7 text-richblack-100;
+  }
+
+  /* ------------------------------------------------------------ Empty state */
+  .cn-empty {
+    @apply flex flex-col items-center justify-center gap-3 rounded-xl border
+           border-dashed border-line-strong bg-richblack-850 px-6 py-14 text-center;
+  }
+
+  /* ---------------------------------------------------------- Skeleton load */
+  .skeleton {
+    @apply rounded-lg bg-richblack-800;
+    background-image: linear-gradient(
+      90deg,
+      rgba(148, 163, 184, 0) 0%,
+      rgba(148, 163, 184, 0.09) 50%,
+      rgba(148, 163, 184, 0) 100%
+    );
+    background-size: 500px 100%;
+    background-repeat: no-repeat;
+    animation: cn-shimmer 1.6s linear infinite;
+  }
+}
+
+/* ----------------------------------------------------------- Loading spinner */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid rgba(148, 163, 184, 0.18);
+  border-top-color: #6366f1;
+  border-right-color: #22d3ee;
+  animation: cn-spin 0.7s linear infinite;
+}
+
+@keyframes cn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cn-shimmer {
+  0% {
+    background-position: -500px 0;
+  }
+  100% {
+    background-position: 500px 0;
+  }
+}
+
+/* Ambient glow behind the homepage code panels. */
+.codeblock1,
+.codeblock2 {
+  position: absolute;
+  width: 340px;
+  height: 240px;
+  left: calc(50% - 170px);
+  top: calc(50% - 120px);
+  border-radius: 100%;
+  opacity: 0.55;
+  filter: blur(56px);
+  pointer-events: none;
+}
+.codeblock1 {
+  background: radial-gradient(
+    circle at 35% 40%,
+    rgba(99, 102, 241, 0.55),
+    rgba(11, 17, 32, 0) 70%
+  );
+}
+.codeblock2 {
+  background: radial-gradient(
+    circle at 60% 45%,
+    rgba(34, 211, 238, 0.42),
+    rgba(11, 17, 32, 0) 70%
+  );
+}
+
+/* Editor-style frame used by the homepage code panels. */
+.code-border {
+  border: 1px solid var(--cn-line);
+  border-radius: var(--cn-radius);
+  background: linear-gradient(
+    160deg,
+    rgba(21, 30, 46, 0.95) 0%,
+    rgba(17, 24, 39, 0.95) 100%
+  );
+  box-shadow: 0 24px 60px -32px rgba(0, 0, 0, 0.9);
+}
+
+/* Dashboard sidebar icon states */
+.active-icon {
+  fill: #818cf8 !important;
+  color: #818cf8 !important;
+}
+
+.inactive-icon {
+  fill: #748297;
+  color: #748297;
+}
+
+/* Swiper */
+.swiper-slide {
+  width: 100%;
+  height: 100%;
+}
+.swiper-pagination-bullet {
+  background: #475569 !important;
+  opacity: 1 !important;
+}
+.swiper-pagination-bullet-active {
+  background: #6366f1 !important;
+}
+
+/* ------------------------------------------------------------ Motion policy */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
